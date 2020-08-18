@@ -31,7 +31,7 @@ RUN apk add --no-cache --virtual gnuradio-build-dependencies \
     boost-dev \
     ffmpeg-dev \
     portaudio-dev \
-    alsa-dev \
+    alsa-lib-dev \
     gmp-dev \
     orc-dev \
     sdl-dev \
@@ -92,9 +92,10 @@ RUN pip install \
 
 RUN git clone https://github.com/EttusResearch/uhd /uhd
 
-WORKDIR /uhd/build
+RUN mkdir -p /uhd/host/build/
+WORKDIR /uhd/host/build/
 
-RUN  cmake \
+RUN cmake \
     -DCMAKE_INSTALL_PREFIX=/opt/uhd \
     ..
 RUN make install
@@ -146,7 +147,7 @@ RUN apk add --no-cache --virtual gnuradio-runtime-dependencies \
     xterm \
     fftw \
     portaudio \
-    alsa
+    alsa-lib
 
 RUN apk add --no-cache --virtual gnuradio-edge-build-dependencies \
      --repository http://dl-cdn.alpinelinux.org/alpine/edge/testing  \
