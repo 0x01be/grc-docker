@@ -102,6 +102,7 @@ RUN make install
 
 ENV LD_LIBRARY_PATH $LD_LIBRARY_PATH:/opt/codec2/lib64/:/opt/mpir/lib/:/opt/volk/lib/:/usr/local/qwt-6.1.5/lib/:/opt/uhd/lib/
 ENV LD_RUN_PATH $LD_RUN_PATH:/opt/codec2/lib64/:/opt/mpir/lib/:/opt/volk/lib/:/usr/local/qwt-6.1.5/lib/:/opt/uhd/lib/
+ENV PYTHONPATH $PYTHONPATH:/opt/uhd/lib/python3.8/site-packages/
 
 RUN git clone --depth 1 https://github.com/gnuradio/gnuradio /gnuradio
 
@@ -114,9 +115,10 @@ ENV CXXFLAGS "$CXXFLAGS -U_FORTIFY_SOURCE"
 RUN cmake \
     -DLIBCODEC2_LIBRARIES=/opt/codec2/lib64 \
     -DLIBCODEC2_INCLUDE_DIRS=/opt/codec2/include \
-    -DMPIRXX_LIBRARY=/opt/mpir/lib \
-    -DMPIR_LIBRARY=/opt/mpir/lib \
+    -DMPIR_LIBRARY=/opt/mpir/lib/libmpir.so.23.0.3 \
     -DMPIR_INCLUDE_DIR=/opt/mpir/include \
+    -DQWT_INCLUDE_DIRS=/usr/local/qwt-6.1.5/include \
+    -DQWT_LIBRARIES=/usr/local/qwt-6.1.5/lib \
     -DCMAKE_INSTALL_PREFIX=/opt/gnuradio \
     -DCMAKE_BUILD_TYPE=Release \
     -DPYTHON_EXECUTABLE=/usr/bin/python3 \
@@ -159,7 +161,7 @@ RUN apk add --no-cache --virtual gnuradio-edge-build-dependencies \
 
 ENV LD_LIBRARY_PATH $LD_LIBRARY_PATH:/usr/local/qwt-6.1.5/lib/:/opt/codec2/lib64/:/opt/mpir/lib/:/opt/volk/lib/:/opt/uhd/lib/:/opt/gnuradio/lib/
 ENV LD_RUN_PATH $LD_RUN_PATH:/usr/local/qwt-6.1.5/lib/:/opt/codec2/lib64/:/opt/mpir/lib/:/opt/volk/lib/:/opt/uhd/lib/:/opt/gnuradio/lib/
-ENV PYTHONPATH $PYTHONPATH:/opt/gnuradio/lib/python3.8/site-packages
+ENV PYTHONPATH $PYTHONPATH:/opt/gnuradio/lib/python3.8/site-packages:/opt/uhd/lib/python3.8/site-packages/
 ENV PATH $PATH:/opt/gnuradio/bin/
 
 EXPOSE 10000
