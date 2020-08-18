@@ -137,7 +137,11 @@ RUN apk add --no-cache --virtual gnuradio-runtime-dependencies \
     py3-numpy \
     py3-six \
     py3-mako \
-    py3-yaml
+    py3-yaml \
+    py3-qt5 \
+    xterm \
+    fftw \
+    portaudio
 
 RUN apk add --no-cache --virtual gnuradio-edge-build-dependencies \
      --repository http://dl-cdn.alpinelinux.org/alpine/edge/testing  \
