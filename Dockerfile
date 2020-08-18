@@ -125,12 +125,27 @@ COPY --from=builder /opt/gnuradio/ /opt/gnuradio/
 
 ENV LD_LIBRARY_PATH $LD_LIBRARY_PATH:/opt/codec2/lib64/:/opt/mpir/lib/:/opt/volk/lib/:/opt/gnuradio/lib/
 ENV LD_RUN_PATH $LD_RUN_PATH§:/opt/codec2/lib64/:/opt/mpir/lib/:/opt/volk/lib/:/opt/gnuradio/lib/
+ENV PYTHONPATH $PYTHONPATH:/opt/gnuradio/lib/python3.8/site-packages
 
 RUN apk add --no-cache --virtual gnuradio-runtime-dependencies \
     gtk+3.0 \
     qt5-qtbase \
     qt5-qtsvg \
-    ttf-freefont
+    ttf-freefont \
+    gnome-icon-theme \
+    boost \
+    py3-numpy \
+    py3-six \
+    py3-mako \
+    py3-yaml
+
+RUN apk add --no-cache --virtual gnuradio-edge-build-dependencies \
+     --repository http://dl-cdn.alpinelinux.org/alpine/edge/testing  \
+     --repository http://dl-cdn.alpinelinux.org/alpine/edge/community  \
+     --repository http://dl-cdn.alpinelinux.org/alpine/edge/main \
+     log4cpp \
+     gsm \
+     thrift
 
 ENV PATH $PATH:/opt/gnuradio/bin/
 
