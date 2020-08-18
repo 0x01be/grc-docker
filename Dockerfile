@@ -90,7 +90,7 @@ RUN pip install \
     click \
     click-plugins
 
-RUN git clone https://github.com/EttusResearch/uhd /uhd
+RUN git clone --depth 1 https://github.com/EttusResearch/uhd /uhd
 
 RUN mkdir -p /uhd/host/build/
 WORKDIR /uhd/host/build/
