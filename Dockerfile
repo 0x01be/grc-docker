@@ -22,6 +22,7 @@ RUN apk add --no-cache --virtual gnuradio-build-dependencies \
     py3-pybind11-dev \
     py3-yaml \
     py3-qt5 \
+    py3-pip \
     pango \
     m4 \
     yasm \
@@ -31,7 +32,9 @@ RUN apk add --no-cache --virtual gnuradio-build-dependencies \
     ffmpeg-dev \
     portaudio-dev \
     gmp-dev \
-    orc-dev
+    orc-dev \
+    sdl-dev \
+    libusb-dev
 
 RUN apk add --no-cache --virtual gnuradio-edge-build-dependencies \
      --repository http://dl-cdn.alpinelinux.org/alpine/edge/testing  \
@@ -54,7 +57,6 @@ RUN cmake \
     -DCMAKE_BUILD_TYPE=Release \
     -DPYTHON_EXECUTABLE=/usr/bin/python3 \
     ..
-RUN make
 RUN make install
 
 RUN git clone --depth 1 https://github.com/wbhart/mpir /mpir
@@ -63,7 +65,6 @@ WORKDIR /mpir
 
 RUN ./autogen.sh
 RUN ./configure --prefix=/opt/mpir
-RUN make
 RUN make install
 
 RUN git clone --depth 1  https://github.com/drowe67/codec2 /codec2
@@ -74,7 +75,6 @@ WORKDIR /codec2/build
 RUN cmake \
     -DCMAKE_INSTALL_PREFIX=/opt/codec2 \
     ..
-RUN make
 RUN make install
 
 RUN git clone --depth 1 https://github.com/opencor/qwt /qwt
@@ -82,11 +82,24 @@ RUN git clone --depth 1 https://github.com/opencor/qwt /qwt
 WORKDIR /qwt
 
 RUN qmake-qt5 qwt.pro
-RUN make
 RUN make install
 
-ENV LD_LIBRARY_PATH $LD_LIBRARY_PATH:/opt/codec2/lib64/:/opt/mpir/lib/:/opt/volk/lib/:/usr/local/qwt-6.1.5/lib/
-ENV LD_RUN_PATH $LD_RUN_PATH:/opt/codec2/lib64/:/opt/mpir/lib/:/opt/volk/lib/:/usr/local/qwt-6.1.5/lib/
+RUN pip install \
+    PythonQwt \
+    click \
+    click-plugins
+
+RUN git clone https://github.com/EttusResearch/uhd /uhd
+
+WORKDIR /uhd/build
+
+RUN  cmake \
+    -DCMAKE_INSTALL_PREFIX=/opt/uhd \
+    ..
+RUN make install
+
+ENV LD_LIBRARY_PATH $LD_LIBRARY_PATH:/opt/codec2/lib64/:/opt/mpir/lib/:/opt/volk/lib/:/usr/local/qwt-6.1.5/lib/:/opt/uhd/lib/
+ENV LD_RUN_PATH $LD_RUN_PATH:/opt/codec2/lib64/:/opt/mpir/lib/:/opt/volk/lib/:/usr/local/qwt-6.1.5/lib/:/opt/uhd/lib/
 
 RUN git clone --depth 1 https://github.com/gnuradio/gnuradio /gnuradio
 
@@ -106,16 +119,16 @@ RUN cmake \
     -DCMAKE_BUILD_TYPE=Release \
     -DPYTHON_EXECUTABLE=/usr/bin/python3 \
     ..
-RUN make
 RUN make install
 
 FROM 0x01be/xpra
 
+COPY --from=builder /opt/gnuradio/ /opt/gnuradio/
+COPY --from=builder /opt/uhd/ /opt/uhd/
 COPY --from=builder /opt/volk/ /opt/volk/
 COPY --from=builder /opt/mpir/ /opt/mpir/
 COPY --from=builder /opt/codec2/ /opt/codec2/
 COPY --from=builder /usr/local/qwt-6.1.5/ /usr/local/qwt-6.1.5/
-COPY --from=builder /opt/gnuradio/ /opt/gnuradio/
 
 RUN apk add --no-cache --virtual gnuradio-runtime-dependencies \
     gtk+3.0 \
@@ -141,8 +154,8 @@ RUN apk add --no-cache --virtual gnuradio-edge-build-dependencies \
      gsm \
      thrift
 
-ENV LD_LIBRARY_PATH $LD_LIBRARY_PATH:/usr/local/qwt-6.1.5/lib/:/opt/codec2/lib64/:/opt/mpir/lib/:/opt/volk/lib/:/opt/gnuradio/lib/
-ENV LD_RUN_PATH $LD_RUN_PATH:/usr/local/qwt-6.1.5/lib/:/opt/codec2/lib64/:/opt/mpir/lib/:/opt/volk/lib/:/opt/gnuradio/lib/
+ENV LD_LIBRARY_PATH $LD_LIBRARY_PATH:/usr/local/qwt-6.1.5/lib/:/opt/codec2/lib64/:/opt/mpir/lib/:/opt/volk/lib/:/opt/uhd/lib/:/opt/gnuradio/lib/
+ENV LD_RUN_PATH $LD_RUN_PATH:/usr/local/qwt-6.1.5/lib/:/opt/codec2/lib64/:/opt/mpir/lib/:/opt/volk/lib/:/opt/uhd/lib/:/opt/gnuradio/lib/
 ENV PYTHONPATH $PYTHONPATH:/opt/gnuradio/lib/python3.8/site-packages
 ENV PATH $PATH:/opt/gnuradio/bin/
 
