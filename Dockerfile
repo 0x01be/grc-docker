@@ -22,6 +22,7 @@ RUN apk add --no-cache --virtual gnuradio-build-dependencies \
     py3-pybind11-dev \
     py3-yaml \
     py3-qt5 \
+    py3-zmq \
     pango \
     m4 \
     yasm \
@@ -77,19 +78,16 @@ RUN cmake \
 RUN make
 RUN make install
 
-#RUN git clone --depth 1 https://github.com/opencor/qwt /qwt
+RUN git clone --depth 1 https://github.com/opencor/qwt /qwt
 
-#WORKDIR /qwt
+WORKDIR /qwt
 
-#RUN qmake-qt5 qwt.pro
-#RUN make
-#RUN make install
+RUN qmake-qt5 qwt.pro
+RUN make
+RUN make install
 
-#ENV LD_LIBRARY_PATH $LD_LIBRARY_PATH:/opt/codec2/lib64/:/opt/mpir/lib/:/opt/volk/lib/:/usr/local/qwt-6.1.5/lib/
-#ENV LD_RUN_PATH $LD_RUN_PATH:/opt/codec2/lib64/:/opt/mpir/lib/:/opt/volk/lib/:/usr/local/qwt-6.1.5/lib/
-
-ENV LD_LIBRARY_PATH $LD_LIBRARY_PATH:/opt/codec2/lib64/:/opt/mpir/lib/:/opt/volk/lib/
-ENV LD_RUN_PATH $LD_RUN_PATH:/opt/codec2/lib64/:/opt/mpir/lib/:/opt/volk/lib/
+ENV LD_LIBRARY_PATH $LD_LIBRARY_PATH:/opt/codec2/lib64/:/opt/mpir/lib/:/opt/volk/lib/:/usr/local/qwt-6.1.5/lib/
+ENV LD_RUN_PATH $LD_RUN_PATH:/opt/codec2/lib64/:/opt/mpir/lib/:/opt/volk/lib/:/usr/local/qwt-6.1.5/lib/
 
 RUN git clone --depth 1 https://github.com/gnuradio/gnuradio /gnuradio
 
@@ -117,15 +115,8 @@ FROM 0x01be/xpra
 COPY --from=builder /opt/volk/ /opt/volk/
 COPY --from=builder /opt/mpir/ /opt/mpir/
 COPY --from=builder /opt/codec2/ /opt/codec2/
-#COPY --from=builder /usr/local/qwt-6.1.5/ /usr/local/qwt-6.1.5/
+COPY --from=builder /usr/local/qwt-6.1.5/ /usr/local/qwt-6.1.5/
 COPY --from=builder /opt/gnuradio/ /opt/gnuradio/
-
-#ENV LD_LIBRARY_PATH $LD_LIBRARY_PATH:/usr/local/qwt-6.1.5/lib/:/opt/codec2/lib64/:/opt/mpir/lib/:/opt/volk/lib/:/opt/gnuradio/lib/
-#ENV LD_RUN_PATH $LD_RUN_PATH:/usr/local/qwt-6.1.5/lib/:/opt/codec2/lib64/:/opt/mpir/lib/:/opt/volk/lib/:/opt/gnuradio/lib/
-
-ENV LD_LIBRARY_PATH $LD_LIBRARY_PATH:/opt/codec2/lib64/:/opt/mpir/lib/:/opt/volk/lib/:/opt/gnuradio/lib/
-ENV LD_RUN_PATH $LD_RUN_PATH§:/opt/codec2/lib64/:/opt/mpir/lib/:/opt/volk/lib/:/opt/gnuradio/lib/
-ENV PYTHONPATH $PYTHONPATH:/opt/gnuradio/lib/python3.8/site-packages
 
 RUN apk add --no-cache --virtual gnuradio-runtime-dependencies \
     gtk+3.0 \
@@ -151,10 +142,17 @@ RUN apk add --no-cache --virtual gnuradio-edge-build-dependencies \
      gsm \
      thrift
 
+ENV LD_LIBRARY_PATH $LD_LIBRARY_PATH:/usr/local/qwt-6.1.5/lib/:/opt/codec2/lib64/:/opt/mpir/lib/:/opt/volk/lib/:/opt/gnuradio/lib/
+ENV LD_RUN_PATH $LD_RUN_PATH:/usr/local/qwt-6.1.5/lib/:/opt/codec2/lib64/:/opt/mpir/lib/:/opt/volk/lib/:/opt/gnuradio/lib/
+ENV PYTHONPATH $PYTHONPATH:/opt/gnuradio/lib/python3.8/site-packages
 ENV PATH $PATH:/opt/gnuradio/bin/
+
+EXPOSE 10000
 
 VOLUME /workspace
 WORKDIR /workspace
 
-CMD /usr/bin/xpra start --bind-tcp=0.0.0.0:10000 --html=on --start-child=gnuradio-companion --exit-with-children --daemon=no --xvfb="/usr/bin/Xvfb +extension  Composite -screen 0 1280x720x24+32 -nolisten tcp -noreset" --pulseaudio=no --notifications=no --bell=no --mdns=no
+ENV COMMAND "gnuradio-companion"
+
+CMD /usr/bin/xpra start --bind-tcp=0.0.0.0:10000 --html=on --start-child=$COMMAND --exit-with-children --daemon=no --xvfb="/usr/bin/Xvfb +extension  Composite -screen 0 1280x720x24+32 -nolisten tcp -noreset" --pulseaudio=no --notifications=no --bell=no --mdns=no
 
