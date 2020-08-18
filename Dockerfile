@@ -32,6 +32,7 @@ RUN apk add --no-cache --virtual gnuradio-build-dependencies \
     ffmpeg-dev \
     portaudio-dev \
     alsa-lib-dev \
+    jack-dev \
     gmp-dev \
     orc-dev \
     sdl-dev \
@@ -100,8 +101,8 @@ RUN cmake \
     ..
 RUN make install
 
-ENV LD_LIBRARY_PATH $LD_LIBRARY_PATH:/opt/codec2/lib64/:/opt/mpir/lib/:/opt/volk/lib/:/usr/local/qwt-6.1.5/lib/:/opt/uhd/lib/
-ENV LD_RUN_PATH $LD_RUN_PATH:/opt/codec2/lib64/:/opt/mpir/lib/:/opt/volk/lib/:/usr/local/qwt-6.1.5/lib/:/opt/uhd/lib/
+ENV LD_LIBRARY_PATH $LD_LIBRARY_PATH:/opt/codec2/lib64/:/opt/mpir/lib/:/opt/volk/lib/:/usr/local/qwt-6.1.5/lib/
+ENV LD_RUN_PATH $LD_RUN_PATH:/opt/codec2/lib64/:/opt/mpir/lib/:/opt/volk/lib/:/usr/local/qwt-6.1.5/lib/
 ENV PYTHONPATH $PYTHONPATH:/opt/uhd/lib/python3.8/site-packages/
 
 RUN git clone --depth 1 https://github.com/gnuradio/gnuradio /gnuradio
@@ -122,6 +123,29 @@ RUN cmake \
     -DCMAKE_INSTALL_PREFIX=/opt/gnuradio \
     -DCMAKE_BUILD_TYPE=Release \
     -DPYTHON_EXECUTABLE=/usr/bin/python3 \
+    ..
+RUN make install
+
+ENV LD_LIBRARY_PATH $LD_LIBRARY_PATH:/opt/gnuradio/lib
+ENV LD_RUN_PATH $LD_RUN_PATH:/opt/gnuradio/lib
+
+RUN git clone --depth 1 git://git.osmocom.org/rtl-sdr /rtl-sdr
+
+RUN mkdir -p /rtl-sdr/build
+WORKDIR /rtl-sdr/build
+
+RUN cmake \
+    -DCMAKE_INSTALL_PREFIX=/opt/gnuradio \
+    ..
+RUN make install
+
+RUN git clone --depth 1 git://git.osmocom.org/gr-osmosdr /gr-osmosdr
+
+RUN mkdir -p /gr-osmosdr/build
+WORKDIR /gr-osmosdr/build
+
+RUN cmake \
+    -DCMAKE_INSTALL_PREFIX=/opt/gnuradio \
     ..
 RUN make install
 
@@ -159,9 +183,9 @@ RUN apk add --no-cache --virtual gnuradio-edge-build-dependencies \
      gsm \
      thrift
 
-ENV LD_LIBRARY_PATH $LD_LIBRARY_PATH:/usr/local/qwt-6.1.5/lib/:/opt/codec2/lib64/:/opt/mpir/lib/:/opt/volk/lib/:/opt/uhd/lib/:/opt/gnuradio/lib/
-ENV LD_RUN_PATH $LD_RUN_PATH:/usr/local/qwt-6.1.5/lib/:/opt/codec2/lib64/:/opt/mpir/lib/:/opt/volk/lib/:/opt/uhd/lib/:/opt/gnuradio/lib/
-ENV PYTHONPATH $PYTHONPATH:/opt/gnuradio/lib/python3.8/site-packages:/opt/uhd/lib/python3.8/site-packages/
+ENV LD_LIBRARY_PATH $LD_LIBRARY_PATH:/usr/local/qwt-6.1.5/lib/:/opt/codec2/lib64/:/opt/mpir/lib/:/opt/volk/lib/:/opt/gnuradio/lib/
+ENV LD_RUN_PATH $LD_RUN_PATH:/usr/local/qwt-6.1.5/lib/:/opt/codec2/lib64/:/opt/mpir/lib/:/opt/volk/lib/:/opt/gnuradio/lib/
+ENV PYTHONPATH $PYTHONPATH:/opt/gnuradio/lib/python3.8/site-packages
 ENV PATH $PATH:/opt/gnuradio/bin/
 
 EXPOSE 10000
