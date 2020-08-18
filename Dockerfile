@@ -100,7 +100,7 @@ ENV CFLAGGS "$CFLAGS -U_FORTIFY_SOURCE"
 ENV CXXFLAGS "$CXXFLAGS -U_FORTIFY_SOURCE"
 
 RUN cmake \
-    -DLIBCODEC2_LIBRARIES=/opt/codec2/lib \
+    -DLIBCODEC2_LIBRARIES=/opt/codec2/lib64 \
     -DLIBCODEC2_INCLUDE_DIRS=/opt/codec2/include \
     -DMPIRXX_LIBRARY=/opt/mpir/lib \
     -DMPIR_LIBRARY=/opt/mpir/lib \
@@ -120,11 +120,11 @@ COPY --from=builder /opt/codec2/ /opt/codec2/
 #COPY --from=builder /usr/local/qwt-6.1.5/ /usr/local/qwt-6.1.5/
 COPY --from=builder /opt/gnuradio/ /opt/gnuradio/
 
-#ENV LD_LIBRARY_PATH $LD_LIBRARY_PATH:/usr/local/qwt-6.1.5/lib/:/opt/codec2/lib/:/opt/mpir/lib/:/opt/volk/lib/:/opt/gnuradio/lib/
-#ENV LD_RUN_PATH $LD_RUN_PATH:/usr/local/qwt-6.1.5/lib/:/opt/codec2/lib/:/opt/mpir/lib/:/opt/volk/lib/:/opt/gnuradio/lib/
+#ENV LD_LIBRARY_PATH $LD_LIBRARY_PATH:/usr/local/qwt-6.1.5/lib/:/opt/codec2/lib64/:/opt/mpir/lib/:/opt/volk/lib/:/opt/gnuradio/lib/
+#ENV LD_RUN_PATH $LD_RUN_PATH:/usr/local/qwt-6.1.5/lib/:/opt/codec2/lib64/:/opt/mpir/lib/:/opt/volk/lib/:/opt/gnuradio/lib/
 
-ENV LD_LIBRARY_PATH $LD_LIBRARY_PATH:/opt/codec2/lib/:/opt/mpir/lib/:/opt/volk/lib/:/opt/gnuradio/lib/
-ENV LD_RUN_PATH $LD_RUN_PATH§:/opt/codec2/lib/:/opt/mpir/lib/:/opt/volk/lib/:/opt/gnuradio/lib/
+ENV LD_LIBRARY_PATH $LD_LIBRARY_PATH:/opt/codec2/lib64/:/opt/mpir/lib/:/opt/volk/lib/:/opt/gnuradio/lib/
+ENV LD_RUN_PATH $LD_RUN_PATH§:/opt/codec2/lib64/:/opt/mpir/lib/:/opt/volk/lib/:/opt/gnuradio/lib/
 
 RUN apk add --no-cache --virtual gnuradio-runtime-dependencies \
     gtk+3.0 \
