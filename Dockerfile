@@ -22,7 +22,6 @@ RUN apk add --no-cache --virtual gnuradio-build-dependencies \
     py3-pybind11-dev \
     py3-yaml \
     py3-qt5 \
-    py3-zmq \
     pango \
     m4 \
     yasm \
