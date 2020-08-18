@@ -31,6 +31,7 @@ RUN apk add --no-cache --virtual gnuradio-build-dependencies \
     boost-dev \
     ffmpeg-dev \
     portaudio-dev \
+    alsa-dev \
     gmp-dev \
     orc-dev \
     sdl-dev \
@@ -144,7 +145,8 @@ RUN apk add --no-cache --virtual gnuradio-runtime-dependencies \
     py3-qt5 \
     xterm \
     fftw \
-    portaudio
+    portaudio \
+    alsa
 
 RUN apk add --no-cache --virtual gnuradio-edge-build-dependencies \
      --repository http://dl-cdn.alpinelinux.org/alpine/edge/testing  \
