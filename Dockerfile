@@ -101,7 +101,7 @@ ENV CXXFLAGS "$CXXFLAGS -U_FORTIFY_SOURCE"
 
 RUN cmake \
     -DLIBCODEC2_LIBRARIES=/opt/codec2/lib64 \
-    -DLIBCODEC2_INCLUDE_DIRS=/opt/codec2/include \
+    -DLIBCODEC2_INCLUDE_DIRS=/opt/codec2/include/codec2 \
     -DMPIRXX_LIBRARY=/opt/mpir/lib \
     -DMPIR_LIBRARY=/opt/mpir/lib \
     -DMPIR_INCLUDE_DIR=/opt/mpir/include \
