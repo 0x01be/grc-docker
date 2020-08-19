@@ -110,7 +110,7 @@ RUN cp /usr/local/qwt-6.1.6-svn/include/*.h /qwtpolar/src/
 
 RUN apk --no-cache add --repository http://dl-cdn.alpinelinux.org/alpine/edge/testing qt-creator
 
-RUN qmake-qt5 qwt.pro
+RUN qmake-qt5 qwtpolar.pro
 RUN make install
 
 RUN git clone --depth 1 https://github.com/EttusResearch/uhd /uhd
