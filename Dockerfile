@@ -91,15 +91,15 @@ RUN pip install \
     click \
     click-plugins
 
-RUN git clone --depth 1 https://github.com/EttusResearch/uhd /uhd
-
-RUN mkdir -p /uhd/host/build/
-WORKDIR /uhd/host/build/
-
-RUN cmake \
-    -DCMAKE_INSTALL_PREFIX=/opt/uhd \
-    ..
-RUN make install
+#RUN git clone --depth 1 https://github.com/EttusResearch/uhd /uhd
+#
+#RUN mkdir -p /uhd/host/build/
+#WORKDIR /uhd/host/build/
+#
+#RUN cmake \
+#    -DCMAKE_INSTALL_PREFIX=/opt/uhd \
+#    ..
+#RUN make install
 
 ENV LD_LIBRARY_PATH $LD_LIBRARY_PATH:/opt/codec2/lib64/:/opt/mpir/lib/:/opt/volk/lib/:/usr/local/qwt-6.1.5/lib/
 ENV LD_RUN_PATH $LD_RUN_PATH:/opt/codec2/lib64/:/opt/mpir/lib/:/opt/volk/lib/:/usr/local/qwt-6.1.5/lib/
