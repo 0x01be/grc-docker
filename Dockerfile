@@ -106,7 +106,7 @@ RUN svn checkout svn://svn.code.sf.net/p/qwtpolar/code/branches/qwtpolar-1.1 /qw
 
 WORKDIR /qwtpolar
 
-RUN cp /usr/local/qwt-6.1.5-svn/include/*.h /qwtpolar/src/
+RUN cp /usr/local/qwt-6.1.6-svn/include/*.h /qwtpolar/src/
 
 RUN apk --no-cache add --repository http://dl-cdn.alpinelinux.org/alpine/edge/testing qt-creator
 
@@ -128,9 +128,9 @@ RUN git clone --depth 1 https://github.com/gnuradio/gnuradio /gnuradio
 RUN mkdir -p /gnuradio/build
 WORKDIR /gnuradio/build
 
-ENV PATH      $PATH:/opt/udh/lib/:/opt/codec2/lib64/:/opt/mpir/lib/:/opt/volk/lib/:/usr/local/qwt-6.1.5-svn/lib/:/usr/local/qwtpolar-1.1.1-svn/lib/
-ENV LD_LIBRARY_PATH /usr/lib/:/opt/uhd/lib/:/opt/codec2/lib64/:/opt/mpir/lib/:/opt/volk/lib/:/usr/local/qwt-6.1.5-svn/lib/:/usr/local/qwtpolar-1.1.1-svn/lib/
-ENV LD_RUN_PATH     /usr/lib/:/opt/uhd/lib/:/opt/codec2/lib64/:/opt/mpir/lib/:/opt/volk/lib/:/usr/local/qwt-6.1.5-svn/lib:/usr/local/qwtpolar-1.1.1-svn/lib/
+ENV PATH      $PATH:/opt/udh/lib/:/opt/codec2/lib64/:/opt/mpir/lib/:/opt/volk/lib/:/usr/local/qwt-6.1.6-svn/lib/:/usr/local/qwtpolar-1.1.1-svn/lib/
+ENV LD_LIBRARY_PATH /usr/lib/:/opt/uhd/lib/:/opt/codec2/lib64/:/opt/mpir/lib/:/opt/volk/lib/:/usr/local/qwt-6.1.6-svn/lib/:/usr/local/qwtpolar-1.1.1-svn/lib/
+ENV LD_RUN_PATH     /usr/lib/:/opt/uhd/lib/:/opt/codec2/lib64/:/opt/mpir/lib/:/opt/volk/lib/:/usr/local/qwt-6.1.6-svn/lib:/usr/local/qwtpolar-1.1.1-svn/lib/
 ENV PYTHONPATH      /usr/lib/python3.8/site-packages/:/opt/uhd/lib/python3.8/site-packages/:/opt/volk/lib/python3.8/site-packages/
 ENV CFLAGGS "$CFLAGS -U_FORTIFY_SOURCE" 
 ENV CXXFLAGS "$CXXFLAGS -U_FORTIFY_SOURCE"
@@ -141,8 +141,8 @@ ENV CXXFLAGS "$CXXFLAGS -U_FORTIFY_SOURCE"
 #    -DLIBCODEC2_INCLUDE_DIRS=/opt/codec2/include \
 #    -DMPIR_LIBRARY=/opt/mpir/lib/libmpir.so.23.0.3 \
 #    -DMPIR_INCLUDE_DIR=/opt/mpir/include \
-#    -DQWT_INCLUDE_DIRS= /usr/local/qwt-6.1.5-svn/include \
-#    -DQWT_LIBRARIES=/usr/local/qwt-6.1.5-svn/lib \
+#    -DQWT_INCLUDE_DIRS= /usr/local/qwt-6.1.6-svn/include \
+#    -DQWT_LIBRARIES=/usr/local/qwt-6.1.6-svn/lib \
 #    -DCMAKE_INSTALL_PREFIX=/opt/gnuradio \
 #    -DCMAKE_BUILD_TYPE=Release \
 #    -DPYTHON_EXECUTABLE=/usr/bin/python3 \
@@ -205,14 +205,14 @@ ENV CXXFLAGS "$CXXFLAGS -U_FORTIFY_SOURCE"
 #COPY --from=builder /opt/volk/ /opt/volk/
 #COPY --from=builder /opt/mpir/ /opt/mpir/
 #COPY --from=builder /opt/codec2/ /opt/codec2/
-#COPY --from=builder /usr/local/qwt-6.1.5-svn/ /usr/local/qwt-6.1.5-svn/
+#COPY --from=builder /usr/local/qwt-6.1.6-svn/ /usr/local/qwt-6.1.6-svn/
 #COPY --from=builder /usr/local/qwtpolar-1.1.1-svn/ /usr/local/qwtpolar-1.1.1-svn/
 #COPY --from=builder /opt/uhd/ /opt/uhd/
 #COPY --from=builder /opt/gnuradio/ /opt/gnuradio/
 #
-#ENV PATH      $PATH:/opt/udh/lib/:/opt/codec2/lib64/:/opt/mpir/lib/:/opt/volk/lib/:/usr/local/qwt-6.1.5-svn/lib/:/usr/local/qwtpolar-1.1.1-svn/lib/:/opt/gnuradio/lib/:/opt/gnuradio/bin/
-#ENV LD_LIBRARY_PATH /usr/lib/:/opt/uhd/lib/:/opt/codec2/lib64/:/opt/mpir/lib/:/opt/volk/lib/:/usr/local/qwt-6.1.5-svn/lib/:/usr/local/qwtpolar-1.1.1-svn/lib/:/opt/gnuradio/lib/
-#ENV LD_RUN_PATH     /usr/lib/:/opt/uhd/lib/:/opt/codec2/lib64/:/opt/mpir/lib/:/opt/volk/lib/:/usr/local/qwt-6.1.5-svn/lib:/usr/local/qwtpolar-1.1.1-svn/lib/:/opt/gnuradio/lib/
+#ENV PATH      $PATH:/opt/udh/lib/:/opt/codec2/lib64/:/opt/mpir/lib/:/opt/volk/lib/:/usr/local/qwt-6.1.6-svn/lib/:/usr/local/qwtpolar-1.1.1-svn/lib/:/opt/gnuradio/lib/:/opt/gnuradio/bin/
+#ENV LD_LIBRARY_PATH /usr/lib/:/opt/uhd/lib/:/opt/codec2/lib64/:/opt/mpir/lib/:/opt/volk/lib/:/usr/local/qwt-6.1.6-svn/lib/:/usr/local/qwtpolar-1.1.1-svn/lib/:/opt/gnuradio/lib/
+#ENV LD_RUN_PATH     /usr/lib/:/opt/uhd/lib/:/opt/codec2/lib64/:/opt/mpir/lib/:/opt/volk/lib/:/usr/local/qwt-6.1.6-svn/lib:/usr/local/qwtpolar-1.1.1-svn/lib/:/opt/gnuradio/lib/
 #ENV PYTHONPATH      /usr/lib/python3.8/site-packages/:/opt/uhd/lib/python3.8/site-packages/:/opt/volk/lib/python3.8/site-packages/:/opt/gnuradio/lib/python3.8/site-packages/
 #
 #EXPOSE 10000
