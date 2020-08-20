@@ -197,12 +197,5 @@ ENV LD_LIBRARY_PATH /usr/lib/:/opt/codec2/lib64/:/opt/mpir/lib/:/opt/volk/lib/:/
 ENV LD_RUN_PATH /usr/lib/:/usr/bin/:/opt/codec2/lib64/:/opt/mpir/lib/:/opt/volk/lib/:/opt/qwt/lib/:/opt/gnuradio/lib/:/opt/rtl-sdr/lib64/
 ENV PYTHONPATH /usr/lib/python3.8/site-packages/:/opt/volk/lib/python3.8/site-packages/:/opt/gnuradio/lib/python3.8/site-packages/
 
-EXPOSE 10000
-
-VOLUME /workspace
-WORKDIR /workspace
-
 ENV COMMAND "gnuradio-companion"
-
-CMD /usr/bin/xpra start --bind-tcp=0.0.0.0:10000 --html=on --start-child=$COMMAND --exit-with-children --daemon=no --xvfb="/usr/bin/Xvfb +extension  Composite -screen 0 1280x720x24+32 -nolisten tcp -noreset" --pulseaudio=no --notifications=no --bell=no --mdns=no
 
