@@ -1,5 +1,8 @@
 FROM alpine as builder
 
+ENV QWT_SVN_BRANCH 6.1
+ENV QWT_VERSION 6.1.6
+
 RUN apk add --no-cache --virtual gnuradio-build-dependencies \
     git \
     subversion \
@@ -88,14 +91,14 @@ RUN pip install \
     click-plugins \
     guidata
 
-RUN svn checkout svn://svn.code.sf.net/p/qwt/code/branches/qwt-6.1 /qwt
+RUN svn checkout svn://svn.code.sf.net/p/qwt/code/branches/${QWT_SVN_BRANCH} /qwt
 
 WORKDIR /qwt
 
 RUN qmake-qt5 qwt.pro
 RUN make install
-RUN cp -R /usr/local/qwt-6.1.6-svn/lib/* /usr/lib/
-RUN cp -R /usr/local/qwt-6.1.6-svn/include/* /usr/include/
+RUN cp -R /usr/local/qwt-${QWT_VERSION}-svn/lib/* /usr/lib/
+RUN cp -R /usr/local/qwt-${QWT_VERSION}-svn/include/* /usr/include/
 
 RUN git clone --depth 1 https://github.com/GauiStori/PyQt-Qwt.git /pyqt-qwt
 
@@ -113,10 +116,10 @@ RUN git clone --depth 1 https://github.com/gnuradio/gnuradio /gnuradio
 RUN mkdir -p /gnuradio/build
 WORKDIR /gnuradio/build
 
-ENV PATH      $PATH:/opt/codec2/lib64/:/opt/mpir/lib/:/opt/volk/lib/
+ENV PATH $PATH:/opt/codec2/lib64/:/opt/mpir/lib/:/opt/volk/lib/
 ENV LD_LIBRARY_PATH /usr/lib/:/opt/codec2/lib64/:/opt/mpir/lib/:/opt/volk/lib/
-ENV LD_RUN_PATH     /usr/lib/:/usr/bin/:/opt/codec2/lib64/:/opt/mpir/lib/:/opt/volk/lib/
-ENV PYTHONPATH      /usr/lib/python3.8/site-packages/:/opt/volk/lib/python3.8/site-packages/
+ENV LD_RUN_PATH /usr/lib/:/usr/bin/:/opt/codec2/lib64/:/opt/mpir/lib/:/opt/volk/lib/
+ENV PYTHONPATH /usr/lib/python3.8/site-packages/:/opt/volk/lib/python3.8/site-packages/
 ENV CFLAGGS "$CFLAGS -U_FORTIFY_SOURCE" 
 ENV CXXFLAGS "$CXXFLAGS -U_FORTIFY_SOURCE"
 
@@ -146,15 +149,7 @@ RUN cmake \
     ..
 RUN make install
 
-#RUN git clone --depth 1 git://git.osmocom.org/gr-osmosdr /gr-osmosdr
-
-#RUN mkdir -p /gr-osmosdr/build
-#WORKDIR /gr-osmosdr/build
-
-#RUN cmake \
-#    -DCMAKE_INSTALL_PREFIX=/opt/gnuradio \
-#    ..
-RUN make install
+RUN cp -R /usr/local/qwt-${QWT_VERSION}-svn /opt/qwt
 
 FROM 0x01be/xpra
 
@@ -179,7 +174,9 @@ RUN apk add --no-cache --virtual gnuradio-runtime-dependencies \
     py3-six \
     py3-mako \
     py3-yaml \
-    py3-qt5
+    py3-qt5 \
+    py3-matplotlib \
+    mesa-dri-gallium
 
  RUN apk add --no-cache --virtual gnuradio-edge-runtime-dependencies \
     --repository http://dl-cdn.alpinelinux.org/alpine/edge/testing  \
@@ -191,7 +188,7 @@ RUN apk add --no-cache --virtual gnuradio-runtime-dependencies \
 COPY --from=builder /opt/volk/ /opt/volk/
 COPY --from=builder /opt/mpir/ /opt/mpir/
 COPY --from=builder /opt/codec2/ /opt/codec2/
-COPY --from=builder /usr/local/qwt-6.1.6-svn/ /opt/qwt/
+COPY --from=builder /opt/qwt/ /opt/qwt/
 COPY --from=builder /opt/gnuradio/ /opt/gnuradio/
 COPY --from=builder /opt/rtl-sdr/ /opt/rtl-sdr/
 
