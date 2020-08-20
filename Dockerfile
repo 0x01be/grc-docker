@@ -91,7 +91,7 @@ RUN pip install \
     click-plugins \
     guidata
 
-RUN svn checkout svn://svn.code.sf.net/p/qwt/code/branches/${QWT_SVN_BRANCH} /qwt
+RUN svn checkout svn://svn.code.sf.net/p/qwt/code/branches/qwt-${QWT_SVN_BRANCH} /qwt
 
 WORKDIR /qwt
 
