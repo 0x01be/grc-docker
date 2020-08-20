@@ -142,7 +142,7 @@ RUN mkdir -p /rtl-sdr/build
 WORKDIR /rtl-sdr/build
 
 RUN cmake \
-    -DCMAKE_INSTALL_PREFIX=/opt/gnuradio \
+    -DCMAKE_INSTALL_PREFIX=/opt/rtl-sdr \
     ..
 RUN make install
 
@@ -188,8 +188,9 @@ COPY --from=builder /opt/mpir/ /opt/mpir/
 COPY --from=builder /opt/codec2/ /opt/codec2/
 COPY --from=builder /usr/local/qwt-6.1.6-svn/ /opt/qwt/
 COPY --from=builder /opt/gnuradio/ /opt/gnuradio/
+COPY --from=builder /opt/rtl-sdr/ /opt/rtl-sdr/
 
-ENV PATH $PATH:/opt/gnuradio/bin/
+ENV PATH $PATH:/opt/gnuradio/bin/:/opt/rtl-sdr/bin/
 ENV PYTHONPATH /usr/lib/python3.8/site-packages/:/opt/volk/lib/python3.8/site-packages/:/opt/gnuradio/lib/python3.8/site-packages/
 
 EXPOSE 10000
