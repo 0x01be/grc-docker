@@ -174,7 +174,12 @@ RUN apk add --no-cache --virtual gnuradio-runtime-dependencies \
     jack \
     gsl \
     sdl \
-    python3
+    python3 \
+    py3-numpy \
+    py3-six \
+    py3-mako \
+    py3-yaml \
+    py3-qt5
 
  RUN apk add --no-cache --virtual gnuradio-edge-runtime-dependencies \
     --repository http://dl-cdn.alpinelinux.org/alpine/edge/testing  \
@@ -190,7 +195,9 @@ COPY --from=builder /usr/local/qwt-6.1.6-svn/ /opt/qwt/
 COPY --from=builder /opt/gnuradio/ /opt/gnuradio/
 COPY --from=builder /opt/rtl-sdr/ /opt/rtl-sdr/
 
-ENV PATH $PATH:/opt/gnuradio/bin/:/opt/rtl-sdr/bin/
+ENV PATH $PATH:/opt/codec2/lib64/:/opt/mpir/lib/:/opt/volk/lib/:/opt/qwt/lib/:/opt/gnuradio/bin/:/opt/rtl-sdr/bin/
+ENV LD_LIBRARY_PATH /usr/lib/:/opt/codec2/lib64/:/opt/mpir/lib/:/opt/volk/lib/:/opt/qwt/lib/:/opt/gnuradio/lib/:/opt/rtl-sdr/lib64/
+ENV LD_RUN_PATH /usr/lib/:/usr/bin/:/opt/codec2/lib64/:/opt/mpir/lib/:/opt/volk/lib/:/opt/qwt/lib/:/opt/gnuradio/lib/:/opt/rtl-sdr/lib64/
 ENV PYTHONPATH /usr/lib/python3.8/site-packages/:/opt/volk/lib/python3.8/site-packages/:/opt/gnuradio/lib/python3.8/site-packages/
 
 EXPOSE 10000
