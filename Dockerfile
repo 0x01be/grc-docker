@@ -103,6 +103,7 @@ WORKDIR /pyqt-qwt
 
 RUN sed -i.bak s/DocType\=\"dict-of-double-QString\"//g /pyqt-qwt/sip/qmap_convert.sip
 
+# Needs to be sip4 (don't install with pip)
 RUN apk add py3-sip-dev
 RUN python3 configure.py --qmake /usr/bin/qmake-qt5 --verbose
 RUN make install
