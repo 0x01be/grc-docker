@@ -1,16 +1,14 @@
 FROM 0x01be/volk as volk
+FROM 0x01be/mpir as mpir
 
-FROM alpine as builder
+FROM alpine
 
 RUN apk add --no-cache --virtual gnuradio-build-dependencies \
     git \
     subversion \
     build-base \
     pkgconfig \
-    cmake \
-    autoconf \
-    automake \
-    libtool
+    cmake
 
 RUN apk add --no-cache --virtual gnuradio-edge-build-dependencies \
     --repository http://dl-cdn.alpinelinux.org/alpine/edge/testing  \
@@ -32,7 +30,6 @@ RUN apk add --no-cache --virtual gnuradio-edge-build-dependencies \
     py3-pip \
     pango \
     m4 \
-    yasm \
     gsl-dev \
     fftw-dev \
     boost-dev \
@@ -55,14 +52,7 @@ RUN apk add --no-cache --virtual gnuradio-edge-build-dependencies \
     graphviz
 
 COPY --from=volk /opt/volk/ /opt/volk/
-
-RUN git clone --depth 1 https://github.com/wbhart/mpir /mpir
-
-WORKDIR /mpir
-
-RUN ./autogen.sh
-RUN ./configure --prefix=/opt/mpir
-RUN make install
+COPY --from=mpir /opt/mpir/ /opt/mpir/
 
 RUN git clone --depth 1  https://github.com/drowe67/codec2 /codec2
 
