@@ -1,3 +1,5 @@
+FROM 0x01be/volk as volk
+
 FROM alpine as builder
 
 RUN apk add --no-cache --virtual gnuradio-build-dependencies \
@@ -19,7 +21,6 @@ RUN apk add --no-cache --virtual gnuradio-edge-build-dependencies \
     gtk+3.0-dev \
     python3-dev \
     cython \
-    py3-mako \
     py3-gobject3 \
     py3-cairo \
     py3-numpy-dev \
@@ -53,17 +54,7 @@ RUN apk add --no-cache --virtual gnuradio-edge-build-dependencies \
     doxygen \
     graphviz
 
-RUN git clone --depth 1 https://github.com/gnuradio/volk /volk
-
-RUN mkdir -p /volk/build
-WORKDIR /volk/build
-
-RUN cmake \
-    -DCMAKE_INSTALL_PREFIX=/opt/volk \
-    -DCMAKE_BUILD_TYPE=Release \
-    -DPYTHON_EXECUTABLE=/usr/bin/python3 \
-    ..
-RUN make install
+COPY --from=volk /opt/volk/ /opt/volk/
 
 RUN git clone --depth 1 https://github.com/wbhart/mpir /mpir
 
