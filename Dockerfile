@@ -1,5 +1,6 @@
 FROM 0x01be/volk as volk
 FROM 0x01be/mpir as mpir
+FROM 0x01be/codec2 as codec2
 
 FROM alpine
 
@@ -53,16 +54,7 @@ RUN apk add --no-cache --virtual gnuradio-edge-build-dependencies \
 
 COPY --from=volk /opt/volk/ /opt/volk/
 COPY --from=mpir /opt/mpir/ /opt/mpir/
-
-RUN git clone --depth 1  https://github.com/drowe67/codec2 /codec2
-
-RUN mkdir -p /codec2/build
-WORKDIR /codec2/build
-
-RUN cmake \
-    -DCMAKE_INSTALL_PREFIX=/opt/codec2 \
-    ..
-RUN make install
+COPY --from=codec2 /opt/codec2/ /opt/codec2/
 
 RUN pip install \
     click \
