@@ -61,7 +61,7 @@ RUN pip install \
     guidata
 
 ENV REVISION master
-RUN git clone --depth 1 --depth ${REVISION} https://github.com/gnuradio/gnuradio /gnuradio
+RUN git clone --depth 1 --branch ${REVISION} https://github.com/gnuradio/gnuradio /gnuradio
 
 RUN mkdir -p /gnuradio/build
 WORKDIR /gnuradio/build
