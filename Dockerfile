@@ -14,7 +14,12 @@ RUN apk add --no-cache --virtual gnuradio-build-dependencies \
     libtool \
     doxygen \
     graphviz \
-    texinfo \
+    texinfo
+
+RUN apk add --no-cache --virtual gnuradio-edge-build-dependencies \
+    --repository http://dl-cdn.alpinelinux.org/alpine/edge/testing  \
+    --repository http://dl-cdn.alpinelinux.org/alpine/edge/community  \
+    --repository http://dl-cdn.alpinelinux.org/alpine/edge/main \
     qt5-qtbase-dev \
     qt5-qtsvg-dev \
     gtk+3.0-dev \
@@ -43,12 +48,7 @@ RUN apk add --no-cache --virtual gnuradio-build-dependencies \
     gmp-dev \
     orc-dev \
     sdl-dev \
-    libusb-dev
-
-RUN apk add --no-cache --virtual gnuradio-edge-build-dependencies \
-    --repository http://dl-cdn.alpinelinux.org/alpine/edge/testing  \
-    --repository http://dl-cdn.alpinelinux.org/alpine/edge/community  \
-    --repository http://dl-cdn.alpinelinux.org/alpine/edge/main \
+    libusb-dev \
     log4cpp-dev \
     gsm-dev \
     thrift-dev \
