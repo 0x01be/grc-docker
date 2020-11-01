@@ -8,10 +8,7 @@ RUN apk add --no-cache --virtual gnuradio-build-dependencies \
     cmake \
     autoconf \
     automake \
-    libtool \
-    doxygen \
-    graphviz \
-    texinfo
+    libtool
 
 RUN apk add --no-cache --virtual gnuradio-edge-build-dependencies \
     --repository http://dl-cdn.alpinelinux.org/alpine/edge/testing  \
@@ -49,9 +46,12 @@ RUN apk add --no-cache --virtual gnuradio-edge-build-dependencies \
     log4cpp-dev \
     gsm-dev \
     thrift-dev \
+    texinfo \
     texlive-dev \
     texlive-luatex \
-    texlive-xetex
+    texlive-xetex \
+    doxygen \
+    graphviz
 
 RUN git clone --depth 1 https://github.com/gnuradio/volk /volk
 
