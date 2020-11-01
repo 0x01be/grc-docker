@@ -79,8 +79,8 @@ RUN pip install \
     click-plugins \
     guidata
 
-ENV QWT_SVN_BRANCH 6.2
-ENV QWT_VERSION 6.2.0
+ENV QWT_SVN_BRANCH 6.1
+ENV QWT_VERSION 6.1.6
 
 RUN svn checkout svn://svn.code.sf.net/p/qwt/code/branches/qwt-${QWT_SVN_BRANCH} /qwt
 
