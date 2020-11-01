@@ -1,7 +1,7 @@
 FROM alpine as builder
 
-ENV QWT_SVN_BRANCH 6.1
-ENV QWT_VERSION 6.1.6
+ENV QWT_SVN_BRANCH 6.2
+ENV QWT_VERSION 6.2.0
 
 RUN apk add --no-cache --virtual gnuradio-build-dependencies \
     git \
