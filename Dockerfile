@@ -1,8 +1,5 @@
 FROM alpine as builder
 
-ENV QWT_SVN_BRANCH 6.2
-ENV QWT_VERSION 6.2.0
-
 RUN apk add --no-cache --virtual gnuradio-build-dependencies \
     git \
     subversion \
@@ -90,6 +87,9 @@ RUN pip install \
     click \
     click-plugins \
     guidata
+
+ENV QWT_SVN_BRANCH 6.2
+ENV QWT_VERSION 6.2.0
 
 RUN svn checkout svn://svn.code.sf.net/p/qwt/code/branches/qwt-${QWT_SVN_BRANCH} /qwt
 
