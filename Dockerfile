@@ -2,11 +2,10 @@ FROM 0x01be/volk as volk
 FROM 0x01be/mpir as mpir
 FROM 0x01be/codec2 as codec2
 
-FROM alpine
+FROM 0x01be/qwt:build
 
 RUN apk add --no-cache --virtual gnuradio-build-dependencies \
     git \
-    subversion \
     build-base \
     pkgconfig \
     cmake
@@ -61,30 +60,8 @@ RUN pip install \
     click-plugins \
     guidata
 
-ENV QWT_SVN_BRANCH 6.1
-ENV QWT_VERSION 6.1.6
-
-RUN svn checkout svn://svn.code.sf.net/p/qwt/code/branches/qwt-${QWT_SVN_BRANCH} /qwt
-
-WORKDIR /qwt
-
-RUN qmake-qt5 qwt.pro
-RUN make install
-RUN cp -R /usr/local/qwt-${QWT_VERSION}-svn/lib/* /usr/lib/
-RUN cp -R /usr/local/qwt-${QWT_VERSION}-svn/include/* /usr/include/
-
-RUN git clone --depth 1 https://github.com/GauiStori/PyQt-Qwt.git /pyqt-qwt
-
-WORKDIR /pyqt-qwt
-
-RUN sed -i.bak s/DocType\=\"dict-of-double-QString\"//g /pyqt-qwt/sip/qmap_convert.sip
-
-# Needs to be sip4 (don't install with pip)
-RUN apk add py3-sip-dev
-RUN python3 configure.py --qmake /usr/bin/qmake-qt5 --verbose
-RUN make install
-
-RUN git clone --depth 1 https://github.com/gnuradio/gnuradio /gnuradio
+ENV REVISION master
+RUN git clone --depth 1 --depth ${REVISION} https://github.com/gnuradio/gnuradio /gnuradio
 
 RUN mkdir -p /gnuradio/build
 WORKDIR /gnuradio/build
