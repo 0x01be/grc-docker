@@ -55,7 +55,9 @@ RUN apk add --no-cache --virtual gnuradio-edge-build-dependencies \
     mtex2mml-fixtures \
     libsndfile-dev 
 
-RUN pip install --prefix=/opt/gnuradio \
+RUN pip install \
+    --prefix=/opt/gnuradio \
+    --no-deps \
     click \
     click-plugins \
     guidata
