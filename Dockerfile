@@ -77,7 +77,7 @@ ENV CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH};/opt/volk/;/opt/mpir/;/opt/codec2/;/o
     CPATH=${CPATH}:/opt/volk/lib/:/opt/mpir/lib/:/opt/codec2/lib/:/opt/codec2/lib64/:/opt/qwt/lib/ \
     C_INCLUDE_PATH=${C_INCLUDE_PATH}:/opt/volk/lib/:/opt/mpir/lib/:/opt/codec2/lib/:/opt/codec2/lib64/:/opt/qwt/lib/ \
     CPLUS_INCLUDE_PATH=${CPLUS_INCLUDE_PATH}:/opt/volk/lib/:/opt/mpir/lib/:/opt/codec2/lib/:/opt/codec2/lib64/:/opt/qwt/lib/ \
-    PYTHONPATH=/usr/lib/python3.8/site-packages/:/opt/volk/lib/python3.8/site-packages:/opt/gnuradio/lib/python3.8/site-packages/ \
+    PYTHONPATH=/usr/lib/python3.8/site-packages/:/opt/volk/lib/python3.8/site-packages:/opt/gnuradio/lib/python3.8/site-packages/:/opt/qwt/lib/python3.8/site-packages/ \
     CFLAGGS="$CFLAGS -U_FORTIFY_SOURCE" \
     CXXFLAGS="$CXXFLAGS -U_FORTIFY_SOURCE"
 
