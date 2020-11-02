@@ -31,17 +31,12 @@ RUN apk add --no-cache --virtual gnuradio-runtime-dependencies \
     gsm 
 
 COPY --from=build /usr/lib/python3.8/site-packages/ /usr/lib/python3.8/site-packages/
-COPY --from=build /opt/volk/ /opt/volk/
-COPY --from=build /opt/mpir/ /opt/mpir/
-COPY --from=build /opt/codec2/ /opt/codec2/
-COPY --from=build /opt/qwt/ /opt/qwt/
-COPY --from=build /opt/gnuradio/ /opt/gnuradio/
-COPY --from=build /opt/rtl-sdr/ /opt/rtl-sdr/
+COPY --from=build /opt/ /opt/
 
-ENV PATH $PATH:/opt/codec2/lib64/:/opt/mpir/lib/:/opt/volk/lib/:/opt/qwt/lib/:/opt/gnuradio/bin/:/opt/rtl-sdr/bin/
-ENV LD_LIBRARY_PATH /usr/lib/:/opt/codec2/lib64/:/opt/mpir/lib/:/opt/volk/lib/:/opt/qwt/lib/:/opt/gnuradio/lib/:/opt/rtl-sdr/lib64/
-ENV LD_RUN_PATH /usr/lib/:/usr/bin/:/opt/codec2/lib64/:/opt/mpir/lib/:/opt/volk/lib/:/opt/qwt/lib/:/opt/gnuradio/lib/:/opt/rtl-sdr/lib64/
-ENV PYTHONPATH /usr/lib/python3.8/site-packages/:/opt/volk/lib/python3.8/site-packages/:/opt/gnuradio/lib/python3.8/site-packages/
+ENV PATH=${PATH}:/opt/volk/bin/:/opt/gnuradio/bin/:/opt/rtl-sdr/bin/ \
+    LD_LIBRARY_PATH=/usr/lib/:/opt/codec2/lib64/:/opt/mpir/lib/:/opt/volk/lib/:/opt/volk/lib64/:/opt/qwt/lib/:/opt/gnuradio/lib/:/opt/rtl-sdr/lib64/ \
+    PYTHONPATH=/usr/lib/python3.8/site-packages/:/opt/volk/lib/python3.8/site-packages/:/opt/gnuradio/lib/python3.8/site-packages/
 
+USER ${USER}
 ENV COMMAND gnuradio-companion
 
