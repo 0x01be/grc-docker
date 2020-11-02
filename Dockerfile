@@ -55,7 +55,7 @@ RUN apk add --no-cache --virtual gnuradio-edge-build-dependencies \
     mtex2mml-fixtures \
     libsndfile-dev 
 
-RUN pip install \
+RUN pip install --prefix=/opt/gnuradio \
     click \
     click-plugins \
     guidata
@@ -70,9 +70,10 @@ RUN git clone --depth 1 --branch ${REVISION} https://github.com/gnuradio/gnuradi
 
 WORKDIR /gnuradio/build
 
-ENV CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH}:/opt/volk/:/opt/mpir/:/opt/codec2/:/opt/qwt/
-ENV CFLAGGS "$CFLAGS -U_FORTIFY_SOURCE" 
-ENV CXXFLAGS "$CXXFLAGS -U_FORTIFY_SOURCE"
+ENV CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/volk/:/opt/mpir/:/opt/codec2/:/opt/qwt/ \
+    PYTHONPATH=/usr/lib/python3.8/site-packages/:/opt/volk/lib/python3.8/site-packages:/opt/gnuradio/lib/python3.8/site-packages/ \
+    CFLAGGS="$CFLAGS -U_FORTIFY_SOURCE" \
+    CXXFLAGS="$CXXFLAGS -U_FORTIFY_SOURCE"
 
 RUN cmake \
     -DCMAKE_INSTALL_PREFIX=/opt/gnuradio \
