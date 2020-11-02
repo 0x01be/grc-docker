@@ -53,7 +53,8 @@ RUN apk add --no-cache --virtual gnuradio-edge-build-dependencies \
     doxygen \
     graphviz \
     mtex2mml-fixtures \
-    libsndfile-dev 
+    libsndfile-dev  \
+    poppler-dev
 
 RUN pip install \
     --prefix=/opt/gnuradio \
