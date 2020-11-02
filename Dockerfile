@@ -1,8 +1,9 @@
 FROM 0x01be/volk as volk
 FROM 0x01be/mpir as mpir
 FROM 0x01be/codec2 as codec2
+FROM 0x01be/qwt as qwt
 
-FROM 0x01be/qwt:build
+FROM alpine
 
 RUN apk add --no-cache --virtual gnuradio-build-dependencies \
     git \
@@ -62,13 +63,14 @@ RUN pip install \
 COPY --from=volk /opt/volk/ /opt/volk/
 COPY --from=mpir /opt/mpir/ /opt/mpir/
 COPY --from=codec2 /opt/codec2/ /opt/codec2/
+COPY --from=qwt /opt/qwt/ /opt/qwt/
 
 ENV REVISION master
 RUN git clone --depth 1 --branch ${REVISION} https://github.com/gnuradio/gnuradio /gnuradio
 
 WORKDIR /gnuradio/build
 
-ENV CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH}:/opt/volk/:/opt/mpir/:/opt/codec2/
+ENV CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH}:/opt/volk/:/opt/mpir/:/opt/codec2/:/opt/qwt/
 ENV CFLAGGS "$CFLAGS -U_FORTIFY_SOURCE" 
 ENV CXXFLAGS "$CXXFLAGS -U_FORTIFY_SOURCE"
 
