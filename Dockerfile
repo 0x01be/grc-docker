@@ -70,7 +70,11 @@ RUN git clone --depth 1 --branch ${REVISION} https://github.com/gnuradio/gnuradi
 
 WORKDIR /gnuradio/build
 
-ENV CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/volk/:/opt/mpir/:/opt/codec2/:/opt/qwt/ \
+ENV CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH};/opt/volk/;/opt/mpir/;/opt/codec2/;/opt/qwt/ \
+    CMAKE_MODULE_PATH=${CMAKE_MODULE_PATH};/opt/volk/;/opt/mpir/;/opt/codec2/;/opt/qwt/ \
+    CPATH=${CPATH}:/opt/volk/lib/:/opt/mpir/lib/:/opt/codec2/lib/:/opt/codec2/lib64/:/opt/qwt/lib/ \
+    C_INCLUDE_PATH=${C_INCLUDE_PATH}:/opt/volk/lib/:/opt/mpir/lib/:/opt/codec2/lib/:/opt/codec2/lib64/:/opt/qwt/lib/ \
+    CPLUS_INCLUDE_PATH=${CPLUS_INCLUDE_PATH}:/opt/volk/lib/:/opt/mpir/lib/:/opt/codec2/lib/:/opt/codec2/lib64/:/opt/qwt/lib/ \
     PYTHONPATH=/usr/lib/python3.8/site-packages/:/opt/volk/lib/python3.8/site-packages:/opt/gnuradio/lib/python3.8/site-packages/ \
     CFLAGGS="$CFLAGS -U_FORTIFY_SOURCE" \
     CXXFLAGS="$CXXFLAGS -U_FORTIFY_SOURCE"
@@ -81,16 +85,5 @@ RUN cmake \
     -DPYTHON_EXECUTABLE=/usr/bin/python3 \
     ..
 
-RUN make install
-
-RUN git clone --depth 1 git://git.osmocom.org/rtl-sdr /rtl-sdr
-
-WORKDIR /rtl-sdr/build
-
-ENV CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH}:/opt/gnuradio/
-
-RUN cmake \
-    -DCMAKE_INSTALL_PREFIX=/opt/rtl-sdr \
-    ..
 RUN make install
 
