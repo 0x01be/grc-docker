@@ -35,7 +35,7 @@ COPY --from=build /opt/ /opt/
 
 ENV PATH=${PATH}:/opt/volk/bin/:/opt/gnuradio/bin/:/opt/rtl-sdr/bin/ \
     LD_LIBRARY_PATH=/usr/lib/:/opt/codec2/lib64/:/opt/mpir/lib/:/opt/volk/lib/:/opt/volk/lib64/:/opt/qwt/lib/:/opt/gnuradio/lib/:/opt/rtl-sdr/lib64/ \
-    PYTHONPATH=/usr/lib/python3.8/site-packages/:/opt/volk/lib/python3.8/site-packages/:/opt/gnuradio/lib/python3.8/site-packages/
+    PYTHONPATH=/usr/lib/python3.8/site-packages/:/opt/volk/lib/python3.8/site-packages/:/opt/gnuradio/lib/python3.8/site-packages/:/opt/qwt/lib/python3.8/site-packages/
 
 USER ${USER}
 ENV COMMAND gnuradio-companion
