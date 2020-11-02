@@ -9,8 +9,6 @@ RUN apk add --no-cache --virtual gnuradio-runtime-dependencies \
     gtk+3.0 \
     qt5-qtbase \
     qt5-qtsvg \
-    ttf-freefont \
-    gnome-icon-theme \
     boost \
     xterm \
     fftw \
