@@ -82,6 +82,8 @@ ENV CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH};/opt/volk/;/opt/mpir/;/opt/codec2/;/o
     CFLAGGS="$CFLAGS -U_FORTIFY_SOURCE" \
     CXXFLAGS="$CXXFLAGS -U_FORTIFY_SOURCE"
 
+RUN ln -s /opt/codec2/include/kiss_fft.h /usr/include/kiss_fft.h
+
 RUN cmake \
     -DCMAKE_INSTALL_PREFIX=/opt/gnuradio \
     -DCMAKE_BUILD_TYPE=Release \
